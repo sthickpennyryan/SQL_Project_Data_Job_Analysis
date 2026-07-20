@@ -70,7 +70,7 @@ WITH top_paying_jobs AS (
 )
 SELECT 
     tp.*,
-    sd.skills    
+    sd.skills
 FROM top_paying_jobs tp
 INNER JOIN skills_job_dim sj ON tp.job_id = sj.job_id
 INNER JOIN skills_dim sd ON sj.skill_id = sd.skill_id

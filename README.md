@@ -33,6 +33,9 @@ This was used for database management, handling the data.
 Code editing software that I utilised for all SQL queries and database management.
 - **Git & Github:** 
 Version control that enabled me to share my SQL scripts and analysis, ensuring accurate tracking and collaboration should anyone wish.
+- **PowerBi:**
+Software used to create visual representations of the queries and an alternate way to display results for questions 1 and 2.
+- **Excel:** Used to collect data from each query and create tables for questions 3, 4 and 5.
 
 ## Analysis
 Each query was tailored to identify specific aspects of the data to uncover insights and increase the granularity of those insights.
@@ -56,10 +59,12 @@ LEFT JOIN company_dim cd
 ON jp.company_id = cd.company_id
 WHERE job_location = 'Anywhere'
 AND salary_year_avg IS NOT NULL
-AND job_title = 'Data Analyst'
+AND job_title_short = 'Data Analyst'
 ORDER BY salary_year_avg DESC
 LIMIT 10; 
 ```
+
+![Top Paying Roles](project_sql\assets\1_highest_paying_jobs.png)
 
 --- ADD IN THE FIDNINGS OF THIS CODE AND WHAT HPAPENS AND FORMAT IT
 --- breakdown of what happened. top paying job pay range, see where they are. see titles adn specalisation etc
@@ -69,20 +74,109 @@ LIMIT 10;
 
 SUMMARY LIKE ABOVE
 
+``` sql
+WITH top_paying_jobs AS (
+    SELECT 
+        job_id,
+        job_title,
+        salary_year_avg,
+        name AS company_name
+    FROM 
+        job_postings_fact jp
+    LEFT JOIN company_dim cd ON jp.company_id = cd.company_id
+    WHERE 
+        job_title_short = 'Data Analyst' AND
+        job_location = 'Anywhere' AND 
+        salary_year_avg IS NOT NULL 
+    ORDER BY 
+        salary_year_avg DESC
+    LIMIT 10
+)
+SELECT 
+    tp.*,
+    sd.skills
+FROM top_paying_jobs tp
+INNER JOIN skills_job_dim sj ON tp.job_id = sj.job_id
+INNER JOIN skills_dim sd ON sj.skill_id = sd.skill_id
+ORDER BY salary_year_avg DESC;
+```
+![Top Paying Skills](project_sql\assets\2_top_paying_skills.png)
+
+NEEDS EXPLANATION
+
 #### 3. What are the most in-demand skills for my role?
 
+
+
+``` sql
+SELECT 
+    sd.skills,
+    COUNT(sj.job_id) AS demand    
+FROM job_postings_fact jp
+INNER JOIN skills_job_dim sj ON jp.job_id = sj.job_id
+INNER JOIN skills_dim sd ON sj.skill_id = sd.skill_id
+WHERE 
+    jp.job_title_short = 'Data Analyst' AND
+    jp.job_work_from_home = TRUE
+GROUP BY
+    sd.skills
+ORDER BY
+        demand DESC
+LIMIT 5;
+```
+![Most In Demand Skills](project_sql\assets\3_in_demand_skills.png)
 
 SUMMARY LIKE ABOVE
 
 #### 4. What are the top skills based on salary for my role?
 
 
+``` sql
+SELECT
+    sd.skills,
+    ROUND(AVG(salary_year_avg), 2) AS avg_salary
+FROM job_postings_fact jp
+INNER JOIN skills_job_dim sj ON jp.job_id = sj.job_id
+INNER JOIN skills_dim sd ON sj.skill_id = sd.skill_id
+WHERE 
+    job_title_short = 'Data Analyst' AND
+    salary_year_avg IS NOT NULL
+GROUP BY 
+    sd.skills
+ORDER BY
+    avg_salary DESC
+LIMIT 10;
+```
+![Top Skills by Salary](project_sql\assets\4_top_skills_by_salary.png)
+
 SUMMARY LIKE ABOVE
 
 #### 5. What are the most optimal skills to learn?
 
 
-
+```sql
+SELECT
+    sd.skill_id,
+    sd.skills,
+    COUNT(sj.job_id) AS demand,
+    ROUND(AVG(salary_year_avg), 2) AS avg_salary
+FROM job_postings_fact jp
+  INNER JOIN skills_job_dim sj ON jp.job_id = sj.job_id
+  INNER JOIN skills_dim sd ON sj.skill_id = sd.skill_id
+WHERE 
+    job_title_short = 'Data Analyst' AND
+    salary_year_avg IS NOT NULL AND
+    job_work_from_home = True
+GROUP BY 
+        sd.skill_id
+HAVING 
+    COUNT(sj.job_id) >= 10    
+ORDER BY 
+    avg_salary DESC,
+    demand DESC
+LIMIT 25;
+```
+![Most Optimal Skills To Learn](project_sql/assets/5_optimal_skills_to_learn.png)
 
 
 ## What I learned

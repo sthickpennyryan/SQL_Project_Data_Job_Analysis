@@ -16,7 +16,7 @@ FROM job_postings_fact
 WHERE job_location = 'Anywhere'
 AND
 salary_year_avg IS NOT NULL) 
-WHERE job_title = 'Data Analyst'
+WHERE job_title_short = 'Data Analyst'
 ORDER BY salary_year_avg DESC
 LIMIT 10;
 --- this gives us the top 10 highest paying remote data analyst jobs
@@ -42,6 +42,6 @@ LEFT JOIN company_dim cd
 ON jp.company_id = cd.company_id
 WHERE job_location = 'Anywhere'
 AND salary_year_avg IS NOT NULL
-AND job_title = 'Data Analyst'
+AND job_title_short = 'Data Analyst'
 ORDER BY salary_year_avg DESC
 LIMIT 10;

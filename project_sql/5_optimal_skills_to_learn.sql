@@ -62,7 +62,7 @@ FROM job_postings_fact jp
 WHERE 
     job_title_short = 'Data Analyst' AND
     salary_year_avg IS NOT NULL AND
-    job_location = 'Anywhere'
+    job_work_from_home = True
 GROUP BY 
         sd.skill_id
 HAVING 
