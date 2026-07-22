@@ -11,7 +11,7 @@ SQL queries can be found here:
 
 
 
-Data for this project comes from [add_a_Name](https://www.lukebarousse.com/sql)
+Data for this project comes from [This website](https://www.lukebarousse.com/sql)
 
 The datasets within combine information about job postings, salaries, location, essential skills and more. 
 ### Questions I wanted to answer
@@ -64,15 +64,21 @@ ORDER BY salary_year_avg DESC
 LIMIT 10; 
 ```
 
+**Breakdown of the top data analyst roles from 2023 dataset**
+- **Salary Range:** The top 10 salaries range from £650,000 to £184,000 indicating sigificant financial options should someone be able to land one of these roles. However, the salary for the top 2 roles (£650,000 and £337,000) are largely ahead of the top 8 suggesting that while these roles are available, they are few and far between and the more likely range for top earning Data Analyst roles is around £256,000 to £184,000.
+- **Job Titles:** While there are repeat job titles (Director, Principal Data Analyst and Data Analyst), there is still a variety of roles that make up the highest paying jobs, as well as subcategories of these roles that have the potential for high earning. Interstingly, the highest paying job (£650,000) is simply titled Data Analyst 
+- **Companies:** While it is not shown in the bar chart, the query highlights that of the top 10 highest paying roles, each are held by 9 different companies (SmartAsset having 2), indicating that high paying roles are not just for the the biggest companies, although they do also have high paying roles (Meta is in the top 10), and that the skills required for these roles are what open up higher pay       
+
+
 ![Top Paying Roles](project_sql/assets/1_highest_paying_jobs.png)
 
---- ADD IN THE FIDNINGS OF THIS CODE AND WHAT HPAPENS AND FORMAT IT
---- breakdown of what happened. top paying job pay range, see where they are. see titles adn specalisation etc
+*Bar graph visualising the top 10 highest paying Data Analyst roles from my dataset; the graph was created in Powerbi from my SQL query results* 
+
 
 
 #### 2. What are the skills required for these top-paying roles?
 
-SUMMARY LIKE ABOVE
+To find the skills associated with the highest paying Data Analyst roles I focused on job titles, the average yearly salary, the associated company and the job ID. I then filtered these to highlight only Data Analyst roles that were remote and had a salary listed. This was then ordered to go from highest to lowest salary and limited to 10 results to get the top 10 highest paying roles. This query was made into a CTE before the associated skills were joined giving me the top 10 highest paying roles and the skills associated with those roles. 
 
 ``` sql
 WITH top_paying_jobs AS (
@@ -100,12 +106,17 @@ INNER JOIN skills_job_dim sj ON tp.job_id = sj.job_id
 INNER JOIN skills_dim sd ON sj.skill_id = sd.skill_id
 ORDER BY salary_year_avg DESC;
 ```
+**Skills breakdown for the top 10 data analyst roles from 2023 dataset:**
+- **Top 3 skills:** SQL is the most in demand skill with a count of 8, closely followed by Python with 7 and Tableau at 6. This highlights the most sought after skills and shows Tableau as the most desired specific visual tool (Python similarly can do visuals but is not specifically for that)
+- **Other notable skills:** R is the next most desired at 4 followed jointly by Excel, Pandas and Snowflake.  
+
 ![Top Paying Skills](project_sql/assets/2_top_paying_skills.png)
 
-NEEDS EXPLANATION
+*Bar chart giving a count of skills associated with the highest paying jobs; this was created in PowerBi by utilising my SQL query.*  
 
 #### 3. What are the most in-demand skills for my role?
 
+The most 'in-demand' skills were classified as the skills that appear the most within job posts. Identifying those that appear highest helps prospective employees hone their skills for desired roles.
 
 
 ``` sql
@@ -124,13 +135,19 @@ ORDER BY
         demand DESC
 LIMIT 5;
 ```
+**Most in-demand skills from 2023 dataset:**
+- **SQL** is by far the highest in demand skill with **Excel* coming in second and **Python** a close third with visualisation tools **Tableau** and **PowerBi** making up the remainder of the most in-demand skills.
+- Interesting, despite **PowerBi** being one of the most in-demand skills, it was not one of the most commonly desired skills in the top 10 highest paying jobs. Furthermore, **Excel** had a low count on the highest paying jobs despite being the second most desired skill. 
+
+
 ![Most In Demand Skills](project_sql/assets/3_in_demand_skills.png)
 
-SUMMARY LIKE ABOVE
+*Table of most 'in-demand' skills created in Excel from the above SQL query.*
+
 
 #### 4. What are the top skills based on salary for my role?
 
-
+Exploration of the highest salaries based on associated skills giving a finer look into skills associated with the highest paying jobs. 
 ``` sql
 SELECT
     sd.skills,
@@ -147,12 +164,17 @@ ORDER BY
     avg_salary DESC
 LIMIT 10;
 ```
+- **Big Data and Machine Learning:** Top salaries are held by those with skills relating to Big Data (PySpark, Couchbase) as well as Machine Learning tools(Juypter, Watson and Datarobot). Skills related to data libraries also command a high salary (Pandas) and highlight the value the industries has placed on data processing and machine learning capabilities.
+- **Software Development and Deployment:** There are also high salaries to be found in software creation and development of tools (Gitlab) 
+
 ![Top Skills by Salary](project_sql/assets/4_top_skills_by_salary.png)
 
-SUMMARY LIKE ABOVE
+*Table for the average salaries for the top 10 highest paying skills; Table created in Excel using the results of my SQL query*
+
 
 #### 5. What are the most optimal skills to learn?
 
+Combing the most in-demand skills with highest average salaries to create a query that highlights the most optimal skills for a prospective employee to focus on for job oppurtunities as well as pay. 
 
 ```sql
 SELECT
@@ -176,25 +198,50 @@ ORDER BY
     demand DESC
 LIMIT 25;
 ```
+- **Highest Demand Programming Languages:** **Python** and **R** stand out as the 2 most in-demand programming languages with respective counts of 236 and 148 for remote job listings. Despite their demand, the average salary for **Python** is:£101,397 and for *R* the average salary is: £100,499. This puts them on the lower end of the skills listed indicating that whilst they are highly in demand, the skills are also likely highly available. 
+
+- **Data Analysis, Modelling & Machine Learning:** Skills relating to machine learning, data analysis, statistics and predictive modeling (Python, SAS, R), all have a significant demand and come with a high average salary, although this is lower than the average salary of some less in-demand skills, and make them good skills to learn for prospective employees.
+
+- **Visualisation:** Tableau has both a high-demand and high-average salary making it a good visualisation tool to pick up in combination with any of the other skills found on this list. 
+
+- **Databases:** While their demand is lower than the above mentioned skills, database skills (NoSQL, Oracle) still have a respectable demand and salary and provide a decent alternative skillset for someone wishing to learn or transition existing skills.
+
 ![Most Optimal Skills To Learn](project_sql/assets/5_optimal_skills_to_learn.png)
 
+*Table highlighting skills associated with the highest average salaries and number of remote job listings; Table created in Excel utilising the above SQL query.*
 
 ## What I learned
---- helped solidfy sql, visuals showing a story, story telling of the analysis, bringing it all together
-
-
+- **SQL** Utilised my SQL to gain real insight into the data at several different levels. Questions posed enabled to gain deeper insight into how SQL functions interact with each other within complex queries, solidified my understanding of which JOIN for what scenario and practiced CTEs and subqueries. 
+- **VS Code:** Gained significant insight into how to utilise VS Code for project creation, version control, analysis, and it's abilities to sync my work with Github. 
 
 ## Conclusions
 
 ### Insights
-e.g., 
-top paying data analyst jobs 
-skills for top paying jobs
-most in demand skills
-skills with higher salaries and what market these are in
-optimal skills for job market value (e.g., sql high demand, decent average, often used)
+Throughout the analysis, several things became clear:
+
+**Top-Paying Data Analyst Jobs:** Remote Data Analyst roles have quite a range of salaries with the highest hitting £650,000. However, this was significantly higher than the other top jobs which were around £200,000. This highlights the potential for high future earnings at the top, even without it being the highest salary.   
+
+**Top-Paying Skills:** The highest-paying Analyst roles had SQL, Python and Tableau as the most frequently appearing skills indicating that proficiency in any or all of these skills give you the best shot at a high paying job. However, profiency does not guarentee a job nor does it guarentee that there is a demand at the time of looking. 
+
+**Most In-Demand Skills:** SQL is by far the most demanded skill in the data analyst job market and is a must have for job seekers. That being said, Python and Excel were both significantly in demand, although less than SQL and therefore may be an alternate avenue for Data Analyst roles should an individual wish to learn something other than SQL. Alternatively, learning 2 of the top 3 or all 3 puts candiates at the best chance as they will have procifiency in the most in-demand skills. 
+
+**Skills with Higher Salaries:** 
+-  **Top Salaries:** these are generally held by those with skills relating to Big Data (PySpark, Couchbase) as well as Machine Learning tools (Juypter, Watson and Datarobot). Skills related to data libraries also command a high salary (Pandas) and highlight the value the industries has placed on data processing and machine learning capabilities.
+
+**Optimal Skills:** 
+
+The most optimal skills highly depend on personal preference but there are quite a few good options depending on the person:
+
+- **Python** and **R:** These skills are highly desirable in the market and provide a high average salary making them a good skill for anyone interested in working on data analysis, predictive modeling and machine learning. However, due to high-demand and salary, it is safe to assume that individuals with these skills are more prevalent, potentially making it harder to get into. 
+
+- **Tableau:** For individuals wishing to levelerage visualisation in their worklife, Tableau is a great option as it has both a high demand and a high average salary (£99,288). Alternatively, PowerBi also has a high demand but lower average salary. 
+
+- **NoSQL** and **Oracle:** While the demand for these roles is lower, they still have a respectable average salary (£101,414 and £104,534 respectively) and provide an alternative skill for those wishing to work with databases.
 
 ### Closing Thoughts
----- what did it do? helped solidfy my skills, confidence and everything
+This project enabled me to solidify my SQL skills and gain deeper understanding of how functions interact with each other in complex queries, different ways to approach problems and that there are different ways for the same questions but what is important is how you present query and explain the answer. 
 
+It also provided me with significant experience in utilising VS Code for project storage, version control and documentation along with the ability to cleanly document my project on Github and how to tell a story with the answers gained from the data. 
+
+The data itself helped me to understand what employers are looking for when it comes to data analyst roles and allowed me to focus my efforts into skills that I want to develop while simultaneously knowing that these skills are widely desirable and have the potential for high earnings. This exploration highlights the importance of continual learning but also learning skills that are applicable to many jobs, not just a few niche skills.
 
