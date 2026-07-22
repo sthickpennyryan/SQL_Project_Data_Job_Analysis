@@ -64,7 +64,7 @@ ORDER BY salary_year_avg DESC
 LIMIT 10; 
 ```
 
-![Top Paying Roles](project_sql\assets\1_highest_paying_jobs.png)
+![Top Paying Roles](project_sql/assets/1_highest_paying_jobs.png)
 
 --- ADD IN THE FIDNINGS OF THIS CODE AND WHAT HPAPENS AND FORMAT IT
 --- breakdown of what happened. top paying job pay range, see where they are. see titles adn specalisation etc
@@ -100,7 +100,7 @@ INNER JOIN skills_job_dim sj ON tp.job_id = sj.job_id
 INNER JOIN skills_dim sd ON sj.skill_id = sd.skill_id
 ORDER BY salary_year_avg DESC;
 ```
-![Top Paying Skills](project_sql\assets\2_top_paying_skills.png)
+![Top Paying Skills](project_sql/assets/2_top_paying_skills.png)
 
 NEEDS EXPLANATION
 
@@ -147,7 +147,7 @@ ORDER BY
     avg_salary DESC
 LIMIT 10;
 ```
-![Top Skills by Salary](project_sql\assets\4_top_skills_by_salary.png)
+![Top Skills by Salary](project_sql/assets/4_top_skills_by_salary.png)
 
 SUMMARY LIKE ABOVE
 
