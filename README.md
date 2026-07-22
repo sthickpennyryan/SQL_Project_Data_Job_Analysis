@@ -124,7 +124,7 @@ ORDER BY
         demand DESC
 LIMIT 5;
 ```
-![Most In Demand Skills](project_sql\assets\3_in_demand_skills.png)
+![Most In Demand Skills](project_sql/assets/3_in_demand_skills.png)
 
 SUMMARY LIKE ABOVE
 
